@@ -22,8 +22,10 @@ function Schedule({ dailySchedule, setDailySchedule }) {
         setDailySchedule(newSchedule);
     };
 
+    const [isComposing, setIsComposing] = useState(false); // IME変換中かどうかを示すステート
+
     const handleKeyDown = (e, index) => {
-        if (e.isComposing) {
+        if (isComposing) {
             return; // IME変換中は何もしない
         }
 
@@ -78,6 +80,8 @@ function Schedule({ dailySchedule, setDailySchedule }) {
                             autoFocus
                             placeholder="タスク名を入力"
                             onKeyDown={(e) => handleKeyDown(e, isModalOpen)}
+                            onCompositionStart={() => setIsComposing(true)} // IME変換の開始を検出
+                            onCompositionEnd={() => setIsComposing(false)} // IME変換の終了を検出
                         />
                     </div>
                 </div>
