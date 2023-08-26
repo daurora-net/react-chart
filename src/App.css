@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  height: 100vh;
+  background-color: #fefff5;
 }
 
 .App-logo {
@@ -32,7 +34,53 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.App-main {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.ChartCircle {
+  width: 500px;
+}
+
+.Schedule ul {
+  list-style: none;
+  color: #7d7d7d;
+}
+
+.Schedule ul li {
+  text-align: right;
+  line-height: 33px;
+}
+
+.Schedule ul li select {
+  margin-left: 15px;
+  padding: 4px;
+  width: 100px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
