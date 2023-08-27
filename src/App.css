@@ -47,7 +47,7 @@
 }
 
 .ChartCircle {
-  width: 500px;
+  width: 550px;
 }
 
 .Schedule ul {
@@ -83,4 +83,9 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.export-btn {
+  cursor: pointer;
+  margin-top: 30px;
 }

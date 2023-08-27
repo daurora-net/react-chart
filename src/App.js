@@ -9,27 +9,19 @@ function App() {
         task: "",
     }));
 
+    const defaultTasks = {
+        "0:00": "睡眠",
+        "9:00": "朝食",
+        "10:00": "仕事",
+        "14:00": "昼食",
+        "15:00": "仕事",
+        "18:00": "休憩",
+        "20:00": "夕食",
+        "21:00": "休憩",
+    };
+
     const initialSchedule = defaultSchedule.map((item) => {
-        switch (item.time) {
-            case "0:00":
-                return { ...item, task: "睡眠" };
-            case "9:00":
-                return { ...item, task: "朝食" };
-            case "10:00":
-                return { ...item, task: "仕事" };
-            case "14:00":
-                return { ...item, task: "昼食" };
-            case "15:00":
-                return { ...item, task: "仕事" };
-            case "18:00":
-                return { ...item, task: "休憩" };
-            case "20:00":
-                return { ...item, task: "夕食" };
-            case "21:00":
-                return { ...item, task: "休憩" };
-            default:
-                return { ...item, task: "" }; // ここで空の文字列をデフォルトとして設定
-        }
+        return { ...item, task: defaultTasks[item.time] || "" };
     });
 
     const [dailySchedule, setDailySchedule] = useState(initialSchedule);

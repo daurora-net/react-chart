@@ -6,20 +6,43 @@ const ChartCircle = ({ dailySchedule }) => {
     const canvasRef = useRef(null);
     const chartRef = useRef(null);
 
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const date = today.getDate();
+    const dayOfWeekStr = ["日", "月", "火", "水", "木", "金", "土"][
+        today.getDay()
+    ];
+    const textToDisplayArray = [
+        `${month}/${date}（${dayOfWeekStr}）のスケジュール`,
+        ``,
+    ];
+
     const taskColors = {
-        睡眠: "#ff7293",
-        仕事: "#4ECDC4",
-        休憩: "#eebd4b",
-        朝食: "#8338EC",
-        昼食: "#8338EC",
-        夕食: "#8338EC",
+        仕事: "#ff7293",
+        睡眠: "#4ECDC4",
+        朝食: "#eebd4b",
+        昼食: "#eebd4b",
+        夕食: "#eebd4b",
+        休憩: "#8338EC",
     };
+
+    function handleExportAsImage() {
+        const canvas = document.getElementById("schedule-canvas");
+        canvas.toBlob((blob) => {
+            const newWindow = window.open();
+            const objectURL = URL.createObjectURL(blob);
+            newWindow.document.write(
+                '<img src="' +
+                    objectURL +
+                    '" style="height: 70vh;display: block;margin: 8vh auto;width: 700px;max-width: 90%;height: auto;">'
+            );
+        }, "image/png");
+    }
 
     const externalNumberPlugin = {
         id: "externalNumbers",
         afterDraw(chart) {
             const ctx = chart.ctx;
-
             const chartArea = chart.chartArea;
             const centerX = (chartArea.left + chartArea.right) / 2;
             const centerY = (chartArea.top + chartArea.bottom) / 2;
@@ -27,7 +50,7 @@ const ChartCircle = ({ dailySchedule }) => {
                 Math.max(
                     chartArea.right - centerX,
                     chartArea.bottom - centerY
-                ) + 10;
+                ) + 0;
 
             for (let i = 0; i < 24; i++) {
                 const angle = (-0.5 + (2 / 24) * i) * Math.PI;
@@ -43,7 +66,8 @@ const ChartCircle = ({ dailySchedule }) => {
     };
 
     useEffect(() => {
-        const ctx = canvasRef.current.getContext("2d");
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
 
         // 既存のグラフが存在する場合は破棄
         if (chartRef.current) {
@@ -62,7 +86,7 @@ const ChartCircle = ({ dailySchedule }) => {
 
             labels.push(item.time);
             taskLabels.push(item.task);
-            backgroundColors.push(taskColors[item.task] || "#CCC");
+            backgroundColors.push(taskColors[item.task] || "#b3a39a");
 
             let nextTime = 24;
             for (let j = i + 1; j < dailySchedule.length; j++) {
@@ -77,13 +101,14 @@ const ChartCircle = ({ dailySchedule }) => {
 
             data.push(duration);
         }
+
         chartRef.current = new Chart(ctx, {
             type: "pie",
             data: {
-                labels: labels, // ここはタスクの時刻
+                labels: labels,
                 datasets: [
                     {
-                        label: "Tasks", // データセットのラベル
+                        label: "Tasks",
                         data: data,
                         backgroundColor: backgroundColors,
                         borderWidth: 1,
@@ -92,18 +117,21 @@ const ChartCircle = ({ dailySchedule }) => {
             },
             plugins: [ChartDataLabels, externalNumberPlugin],
             options: {
-                cutout: "0%", // この行を追加
-                layout: {
-                    padding: {
-                        top: 50,
-                        bottom: 50,
-                        left: 50,
-                        right: 50,
-                    },
-                },
                 plugins: {
+                    title: {
+                        display: true,
+                        text: textToDisplayArray,
+                        font: {
+                            size: 22,
+                        },
+                        position: "top",
+                        padding: {
+                            top: 20,
+                            bottom: 10,
+                        },
+                    },
                     legend: {
-                        display: false, // レジェンドを非表示にする
+                        display: false,
                     },
                     tooltip: {
                         enabled: false,
@@ -122,11 +150,32 @@ const ChartCircle = ({ dailySchedule }) => {
                         offset: 50,
                     },
                 },
+                cutout: "0%",
+                layout: {
+                    padding: {
+                        top: 10,
+                        bottom: 35,
+                        left: 50,
+                        right: 50,
+                    },
+                },
             },
         });
+        // const fontSize = 20; // フォントサイズを適切に設定
+        // ctx.font = `${fontSize}px Arial`;
+        // ctx.textAlign = "top";
+        // ctx.fillStyle = "#000";
+        // ctx.fillText(textToDisplay, canvas.width / 2, fontSize + 10);
     }, [dailySchedule]);
 
-    return <canvas ref={canvasRef} id="schedule-canvas"></canvas>;
+    return (
+        <div>
+            <canvas ref={canvasRef} id="schedule-canvas"></canvas>
+            <button onClick={handleExportAsImage} className="export-btn">
+                画像としてエクスポート
+            </button>
+        </div>
+    );
 };
 
 export default ChartCircle;
