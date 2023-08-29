@@ -42,17 +42,24 @@
 
 .App-main {
   display: flex;
-  width: 100%;
+  width: 900px;
   justify-content: center;
+  max-width: 90vw;
+  margin: 0 auto;
 }
 
 .ChartCircle {
-  width: 550px;
+  width: 60%;
+}
+
+.Schedule {
+  width: 30%;
 }
 
 .Schedule ul {
   list-style: none;
   color: #7d7d7d;
+  padding: 0;
 }
 
 .Schedule ul li {
