@@ -27,17 +27,15 @@ const ChartCircle = ({ dailySchedule }) => {
     };
 
     function handleExportAsImage() {
-        const canvas = document.getElementById("schedule-canvas");
-        canvas.toBlob((blob) => {
-            const newWindow = window.open();
-            const objectURL = URL.createObjectURL(blob);
-            newWindow.document.write(
-                '<img src="' +
-                    objectURL +
-                    '" style="height: 70vh;display: block;margin: 8vh auto;width: 700px;max-width: 90%;height: auto;">'
-            );
-        }, "image/png");
-    }
+      const canvas = document.getElementById("schedule-canvas");
+      canvas.toBlob((blob) => {
+          const newWindow = window.open();
+          const objectURL = URL.createObjectURL(blob);
+          newWindow.document.write(
+              '<img src="' + objectURL + '" style="display: block; margin: 0 auto; width: 700px; max-width: 90%; height: auto;">'
+          );
+      }, "image/png");
+  }  
 
     const externalNumberPlugin = {
         id: "externalNumbers",
